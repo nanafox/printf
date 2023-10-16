@@ -1,8 +1,4 @@
 #include "main.h"
-#define BIN 2
-#define OCT 8
-#define DEC 10
-#define HEX 16
 
 /**
  * _itob - convert integer to the specified base and stores the result
@@ -24,25 +20,27 @@ void _itob(ssize_t number, char *buffer, int base)
 	{
 		/*bases accepted*/
 		case BIN
-		case OCT
-		case DEC
-		case HEX
+			case OCT
+			case DEC
+			case HEX
 			/*Convert remainder to the appropriate character representation*/
 			do {
 				buffer[i++] = (number % base > 9) ? 'a' + (number % base - 10) :
 					(number % base + '0');
 			}
-			while ((number /= base) > 0);
-
-			if (sign < 0)
-			{
-				buffer[i++] = '-';
-				/*Reverse the string to get the correct representation*/
-				_reverse(buffer, i);
-				buffer[i] = '\0';
-				break;
-				default:
-				return;
-			}
+		while
+		{
+			((number /= base) > 0);
+		}
+		if (sign < 0)
+		{
+			buffer[i++] = '-';
+			/*Reverse the string to get the correct representation*/
+			_reverse(buffer, i);
+			buffer[i] = '\0';
+			break;
+			default:
+			return;
+		}
 	}
 }
