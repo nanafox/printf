@@ -1,0 +1,14 @@
+*
+!/**/
+
+__*
+.*/
+
+!*.h
+!*.c
+!tests/
+!Makefile
+!*.md
+!.gitignore
+
+main.c
