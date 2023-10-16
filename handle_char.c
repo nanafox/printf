@@ -11,7 +11,7 @@
  * or 0 if the character appending fails
  */
 int handle_char(__attribute__((unused))
-		const format_specifier * spec, va_list args, string_buffer * buffer)
+		const format_specifier * spec, va_list args, string_buffer *buffer)
 {
 	char ch = va_arg(args, int);
 	size_t initial_length = buffer->length;
