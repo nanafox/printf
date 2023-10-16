@@ -4,16 +4,23 @@
  * _reverse_str - reverse string in place
  *
  * @buffer: string to reverse
- * @len: string length
+ * @len: length of the string
  */
-void _reverse_str(char *buffer, int len)
+void _reverse_str(char *buffer, size_t len)
 {
-	/* swap positions */
-	for (int i = 0; j = len - 1; i < j; i++, j--)
-	{
-		char temp = buffer[i];
+	size_t i, mid;
+	char c;
 
-		s[i] = s[j];
-		s[j] = temp;
+	if (!buffer)
+		return; /* invalid string, nothing to do here */
+	mid = len / 2;
+
+	for (int i = 0; i <= mid; i++)
+	{
+		c = buffer[i];
+
+		/* swap values */
+		buffer[i] = buffer[len - 1];
+		buffer[len - i] = c;
 	}
 }
