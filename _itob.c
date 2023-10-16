@@ -19,19 +19,15 @@ void _itob(ssize_t number, char *buffer, int base)
 	switch (number)
 	{
 		/*bases accepted*/
-		case BIN
-			case OCT
-			case DEC
-			case HEX
+		case BIN:
+		case OCT:
+		case DEC:
+		case HEX:
 			/*Convert remainder to the appropriate character representation*/
 			do {
 				buffer[i++] = (number % base > 9) ? 'a' + (number % base - 10) :
 					(number % base + '0');
-			}
-		while
-		{
-			((number /= base) > 0);
-		}
+			} while ((number /= base) > 0);
 		if (sign < 0)
 		{
 			buffer[i++] = '-';
