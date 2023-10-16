@@ -1,4 +1,4 @@
-lude "main.h"
+#include "main.h"
 
 /**
  * handle_char - appends a character to the string buffer
