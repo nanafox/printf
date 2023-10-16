@@ -15,7 +15,7 @@ void _reverse_str(char *buffer, size_t len)
 		return; /* invalid string, nothing to do here */
 	mid = len / 2;
 
-	for (int i = 0; i < mid; i++)
+	for (i = 0; i < mid; i++)
 	{
 		c = buffer[i];
 
