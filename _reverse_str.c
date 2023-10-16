@@ -15,12 +15,12 @@ void _reverse_str(char *buffer, size_t len)
 		return; /* invalid string, nothing to do here */
 	mid = len / 2;
 
-	for (int i = 0; i <= mid; i++)
+	for (int i = 0; i < mid; i++)
 	{
 		c = buffer[i];
 
 		/* swap values */
-		buffer[i] = buffer[len - 1];
-		buffer[len - i] = c;
+		buffer[i] = buffer[len - i - 1];
+		buffer[len - i - 1] = c;
 	}
 }
