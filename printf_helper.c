@@ -24,7 +24,6 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 	/* ensure format is not NULL */
 	while (*format != '\0')
 	{
-		/* check if we are at the beginning of a format mark */
 		if (*format == '%')
 		{
 			format++;
@@ -37,12 +36,9 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 		}
 		else
 		{
-			/* it's a normal character, append it to the string buffer and continue */
 			append_char(buffer, *format);
 			characters_printed++;
 		}
-
-		/* move to the next character in the format string */
 		format++;
 	}
 
