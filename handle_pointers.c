@@ -15,8 +15,7 @@ int handle_pointer(__attribute__((unused)) const format_specifier * spec,
 	char hex_str[17];
 	int characters_printed;
 	size_t initial_length = buffer->length;
-	unsigned long int pointer = (unsigned long int) va_arg(
-		args, unsigned int *);
+	unsigned long int pointer = va_arg(args, unsigned long int);
 
 	utob(pointer, hex_str, HEX);
 	append_string(buffer, "0x");
