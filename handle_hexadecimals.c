@@ -14,7 +14,7 @@ int handle_hex_lower(__attribute__((unused)) const format_specifier * spec,
 {
 	char hex_str[17];
 	int characters_added;
-	size_t n = va_arg(args, size_t);
+	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
 	utob(n, hex_str, HEX);
@@ -39,7 +39,7 @@ int handle_hex_upper(__attribute__((unused)) const format_specifier * spec,
 	int i;
 	char hex_str[17];
 	int characters_added;
-	size_t n = va_arg(args, size_t);
+	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
 	utob(n, hex_str, HEX);
