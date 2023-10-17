@@ -17,7 +17,7 @@ int handle_hex_lower(__attribute__((unused)) const format_specifier * spec,
 	size_t n = va_arg(args, size_t);
 	size_t initial_length = buffer->length;
 
-	_utob(n, hex_str, HEX);
+	utob(n, hex_str, HEX);
 	append_string(buffer, hex_str);
 
 	characters_added = buffer->length - initial_length;
@@ -42,7 +42,7 @@ int handle_hex_upper(__attribute__((unused)) const format_specifier * spec,
 	size_t n = va_arg(args, size_t);
 	size_t initial_length = buffer->length;
 
-	_utob(n, hex_str, HEX);
+	utob(n, hex_str, HEX);
 	for (i = 0; hex_str[i] != '\0'; i++)
 	{
 		if (hex_str[i] >= 'a' && hex_str[i] <= 'f')
