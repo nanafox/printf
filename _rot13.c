@@ -8,16 +8,16 @@
 char *rot13(char *s)
 {
 	int i, j;
-	char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	char *rot13_mapping = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
+	char *map1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char *map2 = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	for (i = 0; s[i]; i++)
+	for (i = 0; s[i] != '\0'; i++)
 	{
-		for (j = 0; a[j]; j++)
+		for (j = 0; map1[j] != '\0'; j++)
 		{
-			if (s[i] == a[j])
+			if (s[i] == map1[j])
 			{
-				s[i] = b[j];
+				s[i] = map2[j];
 				break;
 			}
 		}

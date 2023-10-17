@@ -23,7 +23,6 @@ format_specifier *create_format_specifiers(void)
 		{'S', 0, 0, 0, handle_custom_string, NULL},
 		{'r', 0, 0, 0, handle_string_reversal, NULL},
 		{'R', 0, 0, 0, handle_rot13, NULL},
-		{'f', 0, 6, 0, handle_float, NULL},
 		{'x', 0, 0, 0, handle_hex_lower, NULL},
 		{'X', 0, 0, 0, handle_hex_upper, NULL},
 		{'b', 0, 0, 0, handle_binary, NULL},
