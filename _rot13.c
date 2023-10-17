@@ -5,7 +5,7 @@
  * @s: string to encode
  * Return: pointer to encoded string
  */
-char *rot13(const char *s)
+char *rot13(char *s)
 {
 	int i, j;
 	char *a = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
