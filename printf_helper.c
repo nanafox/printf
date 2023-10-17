@@ -6,18 +6,23 @@
  * @format: the format string
  * @args: the variable argument list
  *
- * Return: the number of characters printed
+ * Return: the number of characters printed, or -1 on error
  */
 int custom_printf(string_buffer *buffer, const char *format, va_list args)
 {
 	int characters_printed, n_chars;
 	format_specifier *spec;
 
-	spec = create_format_specifiers();
-	characters_printed = n_chars = 0;
+	if (format == NULL)
+		return (-1); /* format string is invalid */
 
+	spec = create_format_specifiers();
+	if (spec == NULL)
+		return (-1); /* memory allocation failed */
+
+	characters_printed = n_chars = 0;
 	/* ensure format is not NULL */
-	while (*format != '\0' && format)
+	while (*format != '\0')
 	{
 		/* check if we are at the beginning of a format mark */
 		if (*format == '%')

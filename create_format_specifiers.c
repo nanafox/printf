@@ -39,13 +39,13 @@ format_specifier *create_format_specifiers(void)
 			num_specifiers * sizeof(format_specifier));
 
 	/* verify memory allocation was successful before continuing */
-	if (format_specifiers)
+	if (format_specifiers == NULL)
 	{
-		_memcpy(
-				format_specifiers, specifiers, num_specifiers * sizeof(format_specifier));
-
-		return (format_specifiers);
+		return (NULL);
 	}
 
-	return (NULL);
+	_memcpy(
+			format_specifiers, specifiers, num_specifiers * sizeof(format_specifier));
+
+	return (format_specifiers);
 }
