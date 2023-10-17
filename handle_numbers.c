@@ -41,7 +41,7 @@ int handle_unsigned_int(__attribute__((unused)) const format_specifier * spec,
 	size_t initial_length = buffer->length;
 	int characters_added;
 
-	_utob(n, result, DEC);
+	utob(n, result, DEC);
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
@@ -65,7 +65,7 @@ int handle_binary(__attribute__((unused)) const format_specifier * spec,
 	size_t n = va_arg(args, size_t);
 	size_t initial_length = buffer->length;
 
-	_utob(n, result, BIN);
+	utob(n, result, BIN);
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
@@ -89,7 +89,7 @@ int handle_octal(__attribute__((unused)) const format_specifier * spec,
 	size_t initial_length = buffer->length;
 	int characters_added;
 
-	_utob(n, result, OCT);
+	utob(n, result, OCT);
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
