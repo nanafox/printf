@@ -8,8 +8,9 @@
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_string(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_string(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str;
 	int characters_added;
@@ -39,9 +40,9 @@ int handle_string(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string @buffer
  */
-	int handle_string_reversal(
-			__attribute__((unused)) const format_specifier * spec, va_list args,
-			string_buffer *buffer)
+int handle_string_reversal(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
 	int characters_added;
@@ -78,8 +79,9 @@ int handle_string(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_rot13(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_rot13(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
 	int characters_added;
@@ -115,9 +117,9 @@ int handle_rot13(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string @buffer
  */
-	int handle_custom_string(
-			__attribute__((unused)) const format_specifier * spec,
-			va_list args, string_buffer *buffer)
+int handle_custom_string(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
 	int characters_added;
