@@ -9,7 +9,7 @@
  *
  * Return: the character considered
  */
-char *_strchr(char *s, char c)
+char *_strchr(char *s, int c)
 {
 	/* loops that checks for presence of character */
 	while (*s)
