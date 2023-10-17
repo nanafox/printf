@@ -9,14 +9,18 @@
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_hex_lower(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_hex_lower(const format_specifier *spec, va_list args,
+		string_buffer *buffer)
 {
 	char hex_str[17];
 	int characters_added;
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
+	if (spec->sharp_flag)
+	{
+		append_string(buffer, "0x");
+	}
 	utob(n, hex_str, HEX);
 	append_string(buffer, hex_str);
 
@@ -33,8 +37,8 @@ int handle_hex_lower(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_hex_upper(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_hex_upper(const format_specifier *spec, va_list args,
+		string_buffer *buffer)
 {
 	int i;
 	char hex_str[17];
@@ -42,6 +46,10 @@ int handle_hex_upper(__attribute__((unused)) const format_specifier * spec,
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
+	if (spec->sharp_flag)
+	{
+		append_string(buffer, "0X");
+	}
 	utob(n, hex_str, HEX);
 	for (i = 0; hex_str[i] != '\0'; i++)
 	{
