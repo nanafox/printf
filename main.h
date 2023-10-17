@@ -114,7 +114,7 @@ void _itob(ssize_t number, char *buffer, int base);
 /* string manipulation functions */
 void _reverse_str(char *buffer, size_t len);
 char *_strchr(const char *s, int c);
-char *rot13(const char *s);
+char *rot13(char *s);
 size_t _strlen(const char *str);
 char *_strdup(const char *s);
 
