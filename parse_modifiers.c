@@ -8,32 +8,38 @@
  *
  * Return: a pointer to the updated format
  */
-const char *parse_modifiers(const char *format, format_specifier *spec,
-		string_buffer *buffer)
+const char *parse_modifiers(const char *format, format_specifier *spec, string_buffer *buffer)
 {
-	const char *fmt_marks = "idfFcsSrRuxXop";
-	char *tmp_fmt = (char *) format;
+    const char *fmt_marks = "idcsSrRuxXop";
 
-	while (*tmp_fmt && !_strchr(fmt_marks, *tmp_fmt))
+    while (*format && !_strchr(fmt_marks, *format)) 
 	{
-		/* parse format string for modifiers */
-		switch (*tmp_fmt)
+        switch (*format) 
 		{
-			case '0': case '1': case '2': case '3': case '4':
-			case '5': case '6': case '7': case '8': case '9':
-				handle_width(tmp_fmt, spec, buffer);
-				break;
-			case '.':
-				handle_precision(tmp_fmt, spec, buffer);
-				break;
-			case 'l':
-				spec->length = 'l';
-				break;
-			case 'h':
-				spec->length = 'h';
-				break;
-		}
-		tmp_fmt++;
-	}
-	return (format);
+            case '1': case '2': case '3': case '4':
+            case '5': case '6': case '7': case '8': case '9':
+                handle_width(format, spec, buffer);
+                break;
+            case '.':
+                handle_precision(format, spec, buffer);
+                break;
+            case 'l':
+                spec->length = 'l';
+                break;
+            case 'h':
+                spec->length = 'h';
+                break;
+            case '#':
+                spec->sharp_flag = 1;
+                break;
+            case '+':
+                spec->plus_flag = 1;
+                break;
+            case ' ':
+                spec->space_flag = 1;
+                break;
+        }
+        format++;
+    }
+    return (format);
 }
