@@ -21,7 +21,7 @@ format_specifier *create_format_specifiers(void)
 		{'%', 0, 0, 0, handle_percent, NULL},
 		{'s', 0, 0, 0, handle_string, NULL},
 		{'S', 0, 0, 0, handle_custom_string, NULL},
-		{'r', 0, 0, 0, handle_string_reversal, NULL},
+		/* {'r', 0, 0, 0, handle_string_reversal, NULL}, */
 		{'R', 0, 0, 0, handle_rot13, NULL},
 		{'x', 0, 0, 0, handle_hex_lower, NULL},
 		{'X', 0, 0, 0, handle_hex_upper, NULL},
