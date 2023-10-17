@@ -6,21 +6,16 @@
  * @buffer: string buffer to store the result
  * @spec:  pointer to a format specifier
  *
- * Return: returs the number of characters printed,
- * which is 1 if a character is successfully appended to the string buffer,
- * or 0 if the character appending fails
+ * Return: 1, the character appended to the string buffer
  */
 int handle_char(__attribute__((unused))
 		const format_specifier * spec, va_list args, string_buffer *buffer)
 {
 	char ch = va_arg(args, int);
-	size_t initial_length = buffer->length;
-	int characters_printed;
 
 	append_char(buffer, ch);
 
-	characters_printed = buffer->length - initial_length;
-	return (characters_printed);
+	return (1);
 }
 
 /**
