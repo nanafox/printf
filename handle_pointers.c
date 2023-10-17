@@ -17,9 +17,18 @@ int handle_pointer(__attribute__((unused)) const format_specifier * spec,
 	size_t initial_length = buffer->length;
 	unsigned long int pointer = va_arg(args, unsigned long int);
 
-	utob(pointer, hex_str, HEX);
-	append_string(buffer, "0x");
-	append_string(buffer, hex_str);
+	/* handle NULL pointers */
+	if (!pointer)
+	{
+		append_string(buffer, "(nil)");
+	}
+	else
+	{
+		/* pointer is address valid */
+		utob(pointer, hex_str, HEX);
+		append_string(buffer, "0x");
+		append_string(buffer, hex_str);
+	}
 
 	characters_printed = buffer->length - initial_length;
 	return (characters_printed);
