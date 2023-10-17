@@ -8,8 +8,9 @@
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_string(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_string(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str;
 	int characters_added;
@@ -39,9 +40,9 @@ int handle_string(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string @buffer
  */
-	int handle_string_reversal(
-			__attribute__((unused)) const format_specifier * spec, va_list args,
-			string_buffer *buffer)
+int handle_string_reversal(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
 	int characters_added;
@@ -78,8 +79,9 @@ int handle_string(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_rot13(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_rot13(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
 	int characters_added;
@@ -115,13 +117,14 @@ int handle_rot13(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string @buffer
  */
-	int handle_custom_string(
-			__attribute__((unused)) const format_specifier * spec,
-			va_list args, string_buffer *buffer)
+int handle_custom_string(
+	__attribute__((unused)) const format_specifier * spec,
+	va_list args, string_buffer *buffer)
 {
+	char hex_str[5];
 	char *str, *dup_str;
 	int characters_added;
-	size_t initial_length;
+	size_t initial_length, i;
 
 	str = va_arg(args, char *);
 	initial_length = buffer->length;
@@ -132,8 +135,18 @@ int handle_rot13(__attribute__((unused)) const format_specifier * spec,
 		if (dup_str == NULL)
 			return (0); /* memory allocation failed, nothing is written */
 
-		/* Actual logic to handle the %S format specifier will be added soon */
-		append_string(buffer, dup_str);
+		for (i = 0; dup_str[i] != '\0'; i++)
+		{
+			if (is_non_print(dup_str[i]))
+			{
+				char_to_hex(hex_str, dup_str[i]);
+				append_string(buffer, hex_str);
+			}
+			else
+			{
+				append_char(buffer, dup_str[i]);
+			}
+		}
 		safe_free(dup_str);
 	}
 	else
@@ -143,4 +156,21 @@ int handle_rot13(__attribute__((unused)) const format_specifier * spec,
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
+}
+
+/**
+ * char_to_hex - Changes a character to its hex equivalent
+ * @buffer: The buffer to store the formatted char
+ * @ch: The character in question
+ *
+ * Return Nothing
+ */
+void char_to_hex(char *buffer, unsigned char ch)
+{
+	const char *hex_chars = "0123456789ABCDEF";
+
+	buffer[0] = '\\';
+	buffer[1] = 'x';
+	buffer[2] = hex_chars[ch >> 4]; /* first hex digit */
+	buffer[3] = hex_chars[ch & 0x0F];  /* second hex digit */
 }

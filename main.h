@@ -118,6 +118,7 @@ char *_strchr(const char *s, int c);
 char *rot13(char *s);
 size_t _strlen(const char *str);
 char *_strdup(const char *s);
+void char_to_hex(char *buffer, unsigned char ch);
 
 /* memory management functions */
 void *_realloc(void *old_mem_blk, size_t old_size, size_t new_size);
