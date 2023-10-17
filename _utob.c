@@ -7,10 +7,8 @@
  * @number: the number to convert
  * @buffer: the string buffer to store the result
  * @base: the base to convert @number to
- *
- * Return: Pointer to the buffer
  */
-char *utob(size_t number, char *buffer, int base)
+void utob(size_t number, char *buffer, int base)
 {
 	size_t len = 0;
 
@@ -28,8 +26,8 @@ char *utob(size_t number, char *buffer, int base)
 
 			buffer[len] = '\0';
 			_reverse_str(buffer, len); /* Get the correct representation */
-			return (buffer);
+			break;
 		default:
-			return (NULL);
+			break;
 	}
 }
