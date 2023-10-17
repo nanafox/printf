@@ -110,6 +110,7 @@ int _printf(const char *format, ...);
 
 /* handles number to string conversion */
 void _itob(ssize_t number, char *buffer, int base);
+void utob(size_t number, char *buffer, int base);
 
 /* string manipulation functions */
 void _reverse_str(char *buffer, size_t len);
@@ -117,7 +118,6 @@ char *_strchr(const char *s, int c);
 char *rot13(char *s);
 size_t _strlen(const char *str);
 char *_strdup(const char *s);
-char *utob(size_t number, char *buffer, int base);
 
 /* memory management functions */
 void *_realloc(void *old_mem_blk, size_t old_size, size_t new_size);
