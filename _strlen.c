@@ -1,18 +1,19 @@
 #include "main.h"
 
 /**
- * _strlen - Counts the length of a string
- * @s: the operand used
+ * _strlen - calculate the length of a string
+ * @str: the string
  *
- * Return: The length of the string
+ * Return: the length of string @str
  */
-size_t _strlen(const char *s)
+size_t _strlen(const char *str)
 {
-	size_t count;
+	size_t len = 0;
 
-	count = 0;
+	while (*str++)
+	{
+		len++;
+	}
 
-	for (; s; count++)
-		s++; /* move to the next character */
-	return (count);
+	return (len);
 }
