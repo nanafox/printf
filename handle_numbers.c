@@ -36,12 +36,12 @@ int handle_decimal(__attribute__((unused)) const format_specifier * spec,
 int handle_unsigned_int(__attribute__((unused)) const format_specifier * spec,
 		va_list args, string_buffer *buffer)
 {
-	unsigned int n = va_arg(args, unsigned int);
+	size_t n = va_arg(args, size_t);
 	char result[21];
 	size_t initial_length = buffer->length;
 	int characters_added;
 
-	_itob(n, result, DEC);
+	_utob(n, result, DEC);
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
@@ -60,12 +60,12 @@ int handle_unsigned_int(__attribute__((unused)) const format_specifier * spec,
 int handle_binary(__attribute__((unused)) const format_specifier * spec,
 		va_list args, string_buffer *buffer)
 {
-	ssize_t n = va_arg(args, ssize_t);
 	char result[65];
-	size_t initial_length = buffer->length;
 	int characters_added;
+	size_t n = va_arg(args, size_t);
+	size_t initial_length = buffer->length;
 
-	_itob(n, result, BIN);
+	_utob(n, result, BIN);
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
@@ -84,12 +84,12 @@ int handle_binary(__attribute__((unused)) const format_specifier * spec,
 int handle_octal(__attribute__((unused)) const format_specifier * spec,
 		va_list args, string_buffer *buffer)
 {
-	ssize_t n = va_arg(args, ssize_t);
+	size_t n = va_arg(args, size_t);
 	char result[23];
 	size_t initial_length = buffer->length;
 	int characters_added;
 
-	_itob(n, result, OCT);
+	_utob(n, result, OCT);
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
