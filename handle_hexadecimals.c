@@ -1,3 +1,4 @@
+#include "main.h"
 
 /**
  * handle_hex_lower - convert and append an integer in lower hexadecimal

@@ -10,33 +10,31 @@
  */
 void _itob(ssize_t number, char *buffer, int base)
 {
-	int i = 0;
-	long long sign = number;
+	size_t len = 0;
+	ssize_t sign = number;
 
 	if (number < 0)
-		number = -number;/*If number is negative, take its absolute value */
+		number = -number; /* get the absolute value of n */
 
-	switch (number)
+	switch (base) /* Check base number */
 	{
-		/*bases accepted*/
+		/* Accepted bases */
 		case BIN:
 		case OCT:
 		case DEC:
 		case HEX:
-			/*Convert remainder to the appropriate character representation*/
 			do {
-				buffer[i++] = (number % base > 9) ? 'a' + (number % base - 10) :
+				buffer[len++] = (number % base > 9) ? ('a' + (number  % base - 10)) :
 					(number % base + '0');
 			} while ((number /= base) > 0);
-		if (sign < 0)
-		{
-			buffer[i++] = '-';
-			/*Reverse the string to get the correct representation*/
-			_reverse(buffer, i);
-			buffer[i] = '\0';
+
+			if (sign < 0)
+				buffer[len++] = '-';
+
+			buffer[len] = '\0';
+			_reverse_str(buffer, len); /* Get the correct representation */
 			break;
-			default:
+		default:
 			return;
-		}
 	}
 }
