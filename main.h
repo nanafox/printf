@@ -92,7 +92,7 @@ int handle_unsigned(const format_specifier *spec, va_list args,
 		string_buffer *buffer);
 int handle_decimal(const format_specifier *spec, va_list args,
 		string_buffer *buffer);
-int handle_unsigned(const format_specifier *spec, va_list args,
+int handle_unsigned_int(const format_specifier *spec, va_list args,
 		string_buffer *buffer);
 int handle_binary(const format_specifier *spec, va_list args,
 		string_buffer *buffer);
