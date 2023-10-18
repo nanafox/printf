@@ -15,7 +15,7 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 
 	spec = create_format_specifiers();
 	if (spec == NULL)
-		return (-1); /* memory allocation failed */
+		return (0); /* memory allocation failed */
 
 	characters_printed = n_chars = 0;
 	/* ensure format is not NULL */
