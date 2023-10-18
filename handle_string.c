@@ -25,8 +25,7 @@ int handle_string(
 	}
 	else
 	{
-		/* temporarily removed appending null for testing */
-		return (-1);
+		append_string(buffer, "(null)");
 	}
 
 	characters_added = buffer->length - initial_length;
