@@ -23,13 +23,13 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 		if (*format == '%')
 		{
 			format++;
-			if (*format == '\0')
+			if (*format == '\0' || *(format + 1) == '\0')
 			{
 				safe_free(spec);
 				return (-1); /* handle lone '%' as format string */
 			}
-			/* logic to conversion modifiers goes here */
-
+			/* handle conversion modifiers */
+			format = parse_modifiers(format, spec);
 			/* handle format specifiers */
 			n_chars = select_format_handler(*format, spec, args, buffer);
 			characters_printed += n_chars;
