@@ -12,16 +12,21 @@ int handle_string(
 	__attribute__((unused)) const format_specifier * spec,
 	va_list args, string_buffer *buffer)
 {
-	char *str;
+	char *str, *dup_str;
 	int characters_added;
-	size_t initial_length;
+	int initial_length;
 
 	str = va_arg(args, char *);
 	initial_length = buffer->length;
 
 	if (str)
 	{
-		append_string(buffer, str);
+		dup_str = _strdup(str);
+		if (dup_str == NULL)
+			return (0); /* memory allocation failed, nothing is written */
+
+		append_string(buffer, dup_str);
+		safe_free(dup_str);
 	}
 	else
 	{
