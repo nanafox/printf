@@ -55,7 +55,7 @@ int handle_string_reversal(
 	{
 		dup_str = _strdup(str);
 		if (dup_str == NULL)
-			return (0); /* memory allocation failed, nothing is written */
+			return (-1); /* memory allocation failed, nothing is written */
 
 		str_len = _strlen(str);
 		_reverse_str(dup_str, str_len);
@@ -94,7 +94,7 @@ int handle_rot13(
 	{
 		dup_str = _strdup(str);
 		if (dup_str == NULL)
-			return (0); /* memory allocation failed, nothing is written */
+			return (-1); /* memory allocation failed, nothing is written */
 
 		rot13(dup_str);
 		append_string(buffer, dup_str);
@@ -133,7 +133,7 @@ int handle_custom_string(
 	{
 		dup_str = _strdup(str);
 		if (dup_str == NULL)
-			return (0); /* memory allocation failed, nothing is written */
+			return (-1); /* memory allocation failed, nothing is written */
 
 		for (i = 0; dup_str[i] != '\0'; i++)
 		{
