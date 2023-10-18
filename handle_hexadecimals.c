@@ -17,7 +17,7 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
-	if (spec->sharp_flag)
+	if (spec->sharp_flag && n > 0)
 	{
 		append_string(buffer, "0x");
 	}
@@ -46,7 +46,7 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
-	if (spec->sharp_flag)
+	if (spec->sharp_flag && n > 0)
 	{
 		append_string(buffer, "0X");
 	}

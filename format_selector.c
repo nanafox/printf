@@ -29,6 +29,14 @@ int select_format_handler(const char specifier, format_specifier *spec,
 	{
 		if (spec[i].specifier == specifier)
 		{
+			/* set the flag if it's available in the format string */
+			if (spec->plus_flag)
+				spec[i].plus_flag = 1;
+			else if (spec->space_flag)
+				spec[i].space_flag = 1;
+			else if (spec->sharp_flag)
+				spec[i].sharp_flag = 1;
+
 			/* invoke the appropriate function to handle the found specifier */
 			return (spec[i].handler(&spec[i], args, buffer));
 		}

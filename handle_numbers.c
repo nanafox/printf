@@ -101,7 +101,7 @@ int handle_octal(const format_specifier *spec, va_list args,
 	size_t initial_length = buffer->length;
 	int characters_added;
 
-	if (spec->sharp_flag)
+	if (spec->sharp_flag && n > 0)
 	{
 		append_char(buffer, '0');
 	}
