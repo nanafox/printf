@@ -26,7 +26,7 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 			if (*format == '\0')
 			{
 				safe_free(spec);
-				return (-1);
+				return (-1); /* handle lone '%' as format string */
 			}
 			/* logic to conversion modifiers goes here */
 
