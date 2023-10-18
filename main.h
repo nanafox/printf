@@ -13,7 +13,12 @@
 #define HEX 16
 
 /* check for non-printable characters */
-#define is_non_print(c) ((c < 32 || c >= 127) ? 1 : 0)
+#define is_non_print(c) ((c) < 32 || (c) >= 127)
+
+/* macros for flags */
+#define is_valid_plus_specifier(c) ((c) == 'i' || (c) == 'd')
+#define is_valid_space_specifier(c) ((c) == 'i' || (c) == 'd')
+#define is_valid_sharp_specifier(c) ((c) == 'x' || (c) == 'X' || (c) == 'o')
 
 /**
  * struct string_buffer - structure to hold a dynamically growing string
@@ -64,8 +69,7 @@ int select_format_handler(const char specifier, format_specifier *spec,
 int custom_printf(string_buffer *buffer, const char *format, va_list args);
 
 /* string modifiers parser */
-const char *parse_modifiers(const char *format, format_specifier *spec,
-		string_buffer *buffer);
+const char *parse_modifiers(const char *format, format_specifier *spec);
 
 /* creates an array of format specifiers and used by the multiple functions */
 format_specifier *create_format_specifiers(void);
