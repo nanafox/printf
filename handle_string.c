@@ -12,11 +12,10 @@ int handle_string(
 	__attribute__((unused)) const format_specifier * spec,
 	va_list args, string_buffer *buffer)
 {
-	char *str;
+	char *str = va_arg(args, char *);
 	int characters_added;
 	size_t initial_length;
 
-	str = va_arg(args, char *);
 	initial_length = buffer->length;
 
 	if (str)
@@ -26,7 +25,6 @@ int handle_string(
 	else
 	{
 		append_string(buffer, "(null)");
-		exit(-1); /* exit on NULL string - invalid argument */
 	}
 
 	characters_added = buffer->length - initial_length;
