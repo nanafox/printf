@@ -26,6 +26,7 @@ int handle_string(
 	else
 	{
 		append_string(buffer, "(null)");
+		exit(-1); /* exit on NULL string - invalid argument */
 	}
 
 	characters_added = buffer->length - initial_length;
