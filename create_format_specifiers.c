@@ -15,20 +15,20 @@
 format_specifier *create_format_specifiers(void)
 {
 	static format_specifier specifiers[] = {
-		{'d', 0, 0, 0, handle_decimal, NULL},
-		{'i', 0, 0, 0, handle_decimal, NULL},
-		{'c', 0, 0, 0, handle_char, NULL},
-		{'%', 0, 0, 0, handle_percent, NULL},
-		{'s', 0, 0, 0, handle_string, NULL},
-		{'S', 0, 0, 0, handle_custom_string, NULL},
-		{'r', 0, 0, 0, handle_string_reversal, NULL},
-		{'R', 0, 0, 0, handle_rot13, NULL},
-		{'x', 0, 0, 0, handle_hex_lower, NULL},
-		{'X', 0, 0, 0, handle_hex_upper, NULL},
-		{'b', 0, 0, 0, handle_binary, NULL},
-		{'o', 0, 0, 0, handle_octal, NULL},
-		{'u', 0, 0, 0, handle_unsigned_int, NULL},
-		{'p', 0, 0, 0, handle_pointer, NULL}
+		{'d', 0, 0, 0, 0, 0, 0, handle_decimal},
+		{'i', 0, 0, 0, 0, 0, 0, handle_decimal},
+		{'c', 0, 0, 0, 0, 0, 0, handle_char},
+		{'%', 0, 0, 0, 0, 0, 0, handle_percent},
+		{'s', 0, 0, 0, 0, 0, 0, handle_string},
+		{'S', 0, 0, 0, 0, 0, 0, handle_custom_string},
+		{'r', 0, 0, 0, 0, 0, 0, handle_string_reversal},
+		{'R', 0, 0, 0, 0, 0, 0, handle_rot13},
+		{'x', 0, 0, 0, 0, 0, 0, handle_hex_lower},
+		{'X', 0, 0, 0, 0, 0, 0, handle_hex_upper},
+		{'b', 0, 0, 0, 0, 0, 0, handle_binary},
+		{'o', 0, 0, 0, 0, 0, 0, handle_octal},
+		{'u', 0, 0, 0, 0, 0, 0, handle_unsigned_int},
+		{'p', 0, 0, 0, 0, 0, 0, handle_pointer},
 	};
 
 	/* calculate the number of specifiers in the array */

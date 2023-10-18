@@ -9,14 +9,26 @@
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_decimal(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_decimal(const format_specifier *spec, va_list args,
+		string_buffer *buffer)
 {
 	int n = va_arg(args, int);
 	char result[21];
 	size_t initial_length = buffer->length;
 	int characters_added;
 
+	/* handle the + flag */
+	if (spec->plus_flag)
+	{
+		if (n >= 0)
+			append_char(buffer, '+');
+	}
+	/* handle the space flag */
+	else if (spec->space_flag)
+	{
+		if (n >= 0)
+			append_char(buffer, ' ');
+	}
 	_itob(n, result, DEC);
 	append_string(buffer, result);
 
@@ -33,7 +45,7 @@ int handle_decimal(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_unsigned_int(__attribute__((unused)) const format_specifier * spec,
+int handle_unsigned_int(__attribute__((unused)) const format_specifier *spec,
 		va_list args, string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
@@ -57,7 +69,7 @@ int handle_unsigned_int(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_binary(__attribute__((unused)) const format_specifier * spec,
+int handle_binary(__attribute__((unused)) const format_specifier *spec,
 		va_list args, string_buffer *buffer)
 {
 	char result[65];
@@ -81,14 +93,18 @@ int handle_binary(__attribute__((unused)) const format_specifier * spec,
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_octal(__attribute__((unused)) const format_specifier * spec,
-		va_list args, string_buffer *buffer)
+int handle_octal(const format_specifier *spec, va_list args,
+		string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
 	char result[23];
 	size_t initial_length = buffer->length;
 	int characters_added;
 
+	if (spec->sharp_flag)
+	{
+		append_char(buffer, '0');
+	}
 	utob(n, result, OCT);
 	append_string(buffer, result);
 

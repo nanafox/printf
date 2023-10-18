@@ -38,8 +38,10 @@ void append_string(string_buffer *buffer, const char *str);
  * @width: field width
  * @precision: field precision
  * @length: length modifier ('l' for long, 'h' for short, 0 for none)
+ * @plus_flag: the '+' (plus) flag
+ * @space_flag: the ' ' (space) flag
+ * @sharp_flag: the '#' flag
  * @handler: pointer to the function that handles this format specifier
- * @format: the original format string
  */
 typedef struct format_specifier
 {
@@ -47,9 +49,11 @@ typedef struct format_specifier
 	int width;
 	int precision;
 	char length;
+	int plus_flag;
+	int space_flag;
+	int sharp_flag;
 	int (*handler)(const struct format_specifier *, va_list,
 			struct string_buffer *);
-	const char *format;
 } format_specifier;
 
 /* format selector */
