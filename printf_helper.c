@@ -22,13 +22,15 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 		if (*format == '%')
 		{
 			format++;
-			if (*format == '\0' || *(format + 1) == '\0')
+			if (!_strchr("%ibducsSrRxXop", *format) && *(format + 1) == '\0')
 			{
 				safe_free(spec);
 				return (-1); /* handle lone '%' as format string */
 			}
 			/* handle conversion modifiers */
 			format = parse_modifiers(format, spec);
+			if (format == NULL)
+				return (-1);
 			/* handle format specifiers */
 			n_chars = select_format_handler(*format, spec, args, buffer);
 			characters_printed += n_chars;
