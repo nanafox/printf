@@ -22,7 +22,8 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 		if (*format == '%')
 		{
 			format++;
-			if (!_strchr("%ibducsSrRxXop", *format) && *(format + 1) == '\0')
+			if ((!_strchr("%ibducsSrRxXop", *format) && *(format + 1) == '\0')
+					|| *format == '\0')
 			{
 				safe_free(spec);
 				return (-1); /* handle lone '%' as format string */
@@ -44,7 +45,6 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 	}
 	/* write the final string to stdout */
 	print_str_buffer(buffer->data, characters_printed);
-
 	/* clean up allocated memory */
 	safe_free(buffer->data);
 	safe_free(spec);
