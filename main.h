@@ -113,6 +113,8 @@ int handle_octal(const format_specifier *spec, va_list args,
 				 string_buffer *buffer);
 int handle_pointer(const format_specifier *spec, va_list args,
 				   string_buffer *buffer);
+int neg_zero_handler(const format_specifier *spec, char *result,
+					 string_buffer *buffer, int len);
 
 /* prototype for the _printf function */
 int _printf(const char *format, ...);
