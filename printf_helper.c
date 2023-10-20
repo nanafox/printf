@@ -29,7 +29,7 @@ int custom_printf(string_buffer *buffer, const char *format, va_list args)
 				return (-1); /* handle lone '%' as format string */
 			}
 			/* handle conversion modifiers */
-			format = parse_modifiers(format, spec);
+			format = parse_modifiers(format, spec, args);
 			if (format == NULL)
 				return (-1);
 			/* handle format specifiers */
