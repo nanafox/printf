@@ -1,10 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <unistd.h>
 #include <stdarg.h>
-#include <stdlib.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /* base numerals */
 #define BIN 2
@@ -17,8 +17,10 @@
 
 /* macros for flags */
 #define is_valid_plus_specifier(c) ((c) == 'i' || (c) == 'd')
-#define is_valid_space_specifier(c) ((c) == 'i' || (c) == 'd')
+#define is_valid_space_specifier(c) (is_valid_plus_specifier(c))
 #define is_valid_sharp_specifier(c) ((c) == 'x' || (c) == 'X' || (c) == 'o')
+#define is_valid_zero_specifier(c) \
+	(is_valid_plus_specifier(c) || is_valid_sharp_specifier(c) || (c) == 'u')
 
 /**
  * struct string_buffer - structure to hold a dynamically growing string
@@ -46,6 +48,7 @@ void append_string(string_buffer *buffer, const char *str);
  * @plus_flag: the '+' (plus) flag
  * @space_flag: the ' ' (space) flag
  * @sharp_flag: the '#' flag
+ * @zero_flag: the '0' flag
  * @handler: pointer to the function that handles this format specifier
  */
 typedef struct format_specifier
@@ -57,13 +60,14 @@ typedef struct format_specifier
 	int plus_flag;
 	int space_flag;
 	int sharp_flag;
+	int zero_flag;
 	int (*handler)(const struct format_specifier *, va_list,
-			struct string_buffer *);
+				   struct string_buffer *);
 } format_specifier;
 
 /* format selector */
 int select_format_handler(const char specifier, format_specifier *spec,
-		va_list args, string_buffer *buffer);
+						  va_list args, string_buffer *buffer);
 
 /* a helper function to the _printf() function */
 int custom_printf(string_buffer *buffer, const char *format, va_list args);
@@ -79,37 +83,36 @@ void print_str_buffer(const char *str, size_t len);
 
 /* string handlers */
 int handle_precision(const char *format, format_specifier *spec,
-		string_buffer *buffer);
-int handle_width(const char *format, format_specifier *spec,
-		string_buffer *buffer);
+					 string_buffer *buffer);
+int handle_width(format_specifier *spec, string_buffer *buffer, int len);
 int handle_string(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				  string_buffer *buffer);
 int handle_custom_string(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+						 string_buffer *buffer);
 int handle_rot13(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				 string_buffer *buffer);
 int handle_string_reversal(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+						   string_buffer *buffer);
 int handle_char(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				string_buffer *buffer);
 int handle_percent(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				   string_buffer *buffer);
 int handle_float(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				 string_buffer *buffer);
 int handle_decimal(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				   string_buffer *buffer);
 int handle_unsigned_int(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+						string_buffer *buffer);
 int handle_binary(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				  string_buffer *buffer);
 int handle_hex_lower(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+					 string_buffer *buffer);
 int handle_hex_upper(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+					 string_buffer *buffer);
 int handle_octal(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				 string_buffer *buffer);
 int handle_pointer(const format_specifier *spec, va_list args,
-		string_buffer *buffer);
+				   string_buffer *buffer);
 
 /* prototype for the _printf function */
 int _printf(const char *format, ...);
@@ -117,6 +120,11 @@ int _printf(const char *format, ...);
 /* handles number to string conversion */
 void _itob(ssize_t number, char *buffer, int base);
 void utob(size_t number, char *buffer, int base);
+#define _itoa(c) ((c) + '0')
+
+/* handle string to number conversion*/
+int _atoi(const char *nptr);
+#define isdigit(c) ((c) >= '0' && (c) <= '9')
 
 /* string manipulation functions */
 void _reverse_str(char *buffer, size_t len);
@@ -131,6 +139,6 @@ void *_realloc(void *old_mem_blk, size_t old_size, size_t new_size);
 void *_memcpy(void *dest, const void *src, size_t n);
 /* a safer way to deallocate dynamic memory */
 void _free(void **ptr);
-#define safe_free(p) _free((void **) &(p))
+#define safe_free(p) _free((void **)&(p))
 
 #endif /* MAIN_H */

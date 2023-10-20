@@ -10,7 +10,7 @@
  * Return: the number of characters appended to the string buffer
  */
 int handle_decimal(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+				   string_buffer *buffer)
 {
 	int n = va_arg(args, int);
 	char result[21];
@@ -30,6 +30,12 @@ int handle_decimal(const format_specifier *spec, va_list args,
 			append_char(buffer, ' ');
 	}
 	_itob(n, result, DEC);
+	if (spec->zero_flag)
+	{
+		format_specifier *tmp_spec = (format_specifier *) spec;
+
+		handle_width(tmp_spec, buffer, _strlen(result));
+	}
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
@@ -46,7 +52,7 @@ int handle_decimal(const format_specifier *spec, va_list args,
  * Return: the number of characters appended to the string buffer
  */
 int handle_unsigned_int(__attribute__((unused)) const format_specifier *spec,
-		va_list args, string_buffer *buffer)
+						va_list args, string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
 	char result[21];
@@ -54,6 +60,12 @@ int handle_unsigned_int(__attribute__((unused)) const format_specifier *spec,
 	int characters_added;
 
 	utob(n, result, DEC);
+	if (spec->zero_flag)
+	{
+		format_specifier *tmp_spec = (format_specifier *) spec;
+
+		handle_width(tmp_spec, buffer, _strlen(result));
+	}
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
@@ -70,7 +82,7 @@ int handle_unsigned_int(__attribute__((unused)) const format_specifier *spec,
  * Return: the number of characters appended to the string buffer
  */
 int handle_binary(__attribute__((unused)) const format_specifier *spec,
-		va_list args, string_buffer *buffer)
+				  va_list args, string_buffer *buffer)
 {
 	char result[65];
 	int characters_added;
@@ -94,7 +106,7 @@ int handle_binary(__attribute__((unused)) const format_specifier *spec,
  * Return: the number of characters appended to the string buffer
  */
 int handle_octal(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+				 string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
 	char result[23];
@@ -106,6 +118,12 @@ int handle_octal(const format_specifier *spec, va_list args,
 		append_char(buffer, '0');
 	}
 	utob(n, result, OCT);
+	if (spec->zero_flag)
+	{
+		format_specifier *tmp_spec = (format_specifier *) spec;
+
+		handle_width(tmp_spec, buffer, _strlen(result));
+	}
 	append_string(buffer, result);
 
 	characters_added = buffer->length - initial_length;
