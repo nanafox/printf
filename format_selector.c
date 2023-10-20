@@ -41,6 +41,8 @@ int select_format_handler(const char specifier, format_specifier *spec,
 				spec[i].zero_flag = 1;
 				spec[i].width = spec->width;
 			}
+			else if (spec->width)
+				spec[i].width = spec->width;
 
 			/* invoke the appropriate function to handle the found specifier */
 			return (spec[i].handler(&spec[i], args, buffer));
