@@ -21,6 +21,12 @@ const char *parse_modifiers(const char *format, format_specifier *spec,
 			spec->zero_flag = 1;
 			spec->width = _atoi(format);
 		}
+		else if (*format == '-' && is_valid_zero_specifier(*(format + 2)))
+		{
+			format++;
+			spec->minus_flag = 1;
+			spec->width = 6;
+		}
 		else if (isdigit(*format) && is_valid_width_specifier(*(format + 1)))
 			spec->width = _atoi(format);
 		else if (*format == '*' && is_valid_width_specifier(*(format + 1)))

@@ -51,6 +51,7 @@ void append_string(string_buffer *buffer, const char *str);
  * @space_flag: the ' ' (space) flag
  * @sharp_flag: the '#' flag
  * @zero_flag: the '0' flag
+ * @minus_flag: the '-' flag
  * @handler: pointer to the function that handles this format specifier
  */
 typedef struct format_specifier
@@ -63,6 +64,7 @@ typedef struct format_specifier
 	int space_flag;
 	int sharp_flag;
 	int zero_flag;
+	int minus_flag;
 	int (*handler)(const struct format_specifier *, va_list,
 				   struct string_buffer *);
 } format_specifier;

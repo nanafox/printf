@@ -13,7 +13,7 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 					 string_buffer *buffer)
 {
 	char hex_str[17];
-	int characters_added;
+	int characters_added, len;
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
 
@@ -22,18 +22,24 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 		append_string(buffer, "0x");
 	}
 	utob(n, hex_str, HEX);
+
+	len = _strlen(hex_str);
 	if (spec->zero_flag)
 	{
 		format_specifier *tmp_spec = (format_specifier *)spec;
 
-		handle_width(tmp_spec, buffer, _strlen(hex_str));
+		handle_width(tmp_spec, buffer, len);
 	}
-	else if (spec->width)
+	else if (spec->width && spec->minus_flag == 0)
 	{
-		handle_width((format_specifier *)spec, buffer, _strlen(hex_str));
+		handle_width((format_specifier *)spec, buffer, len);
 	}
 
 	append_string(buffer, hex_str);
+	if (spec->minus_flag)
+	{
+		handle_width((format_specifier *)spec, buffer, len);
+	}
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
@@ -51,7 +57,7 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 int handle_hex_upper(const format_specifier *spec, va_list args,
 					 string_buffer *buffer)
 {
-	int i;
+	int i, len;
 	char hex_str[17];
 	int characters_added;
 	unsigned int n = va_arg(args, unsigned int);
@@ -70,17 +76,23 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 			hex_str[i] = hex_str[i] - 'a' + 'A';
 		}
 	}
+
+	len = _strlen(hex_str);
 	if (spec->zero_flag)
 	{
 		format_specifier *tmp_spec = (format_specifier *)spec;
 
-		handle_width(tmp_spec, buffer, _strlen(hex_str));
+		handle_width(tmp_spec, buffer, len);
 	}
 	else if (spec->width)
 	{
-		handle_width((format_specifier *)spec, buffer, _strlen(hex_str));
+		handle_width((format_specifier *)spec, buffer, len);
 	}
 	append_string(buffer, hex_str);
+	if (spec->minus_flag)
+	{
+		handle_width((format_specifier *)spec, buffer, len);
+	}
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
