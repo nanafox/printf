@@ -8,7 +8,8 @@
  *
  * Return: a pointer to the updated format
  */
-const char *parse_modifiers(const char *format, format_specifier *spec)
+const char *parse_modifiers(const char *format, format_specifier *spec,
+ va_list args)
 {
 	while (*format)
 	{
@@ -28,6 +29,19 @@ const char *parse_modifiers(const char *format, format_specifier *spec)
 				spec->width = _atoi(format);
 			}
 			break;
+			case '1': case '2': case '3': case '4': case '5':
+			case '6': case '7': case '8': case '9':
+				if (is_valid_width_specifier(*(format + 1)))
+				{
+					spec->width = _atoi(format);
+				}
+				break;
+			case '*':
+				if (is_valid_width_specifier(*(format + 1)))
+				{
+					spec->width = va_arg(args, int);
+				}
+				break;
 		case '#':
 			if (is_valid_sharp_specifier(*(format + 1)))
 				spec->sharp_flag = 1;
