@@ -2,14 +2,14 @@
 
 /**
  * handle_string - appends a string to the string buffer
- * @spec: format specifier information (unused)
+ * @spec: format specifier information
  * @args: the arguments list
  * @buffer: the string buffer to store the result
  *
  * Return: the number of characters appended to the string @buffer
  */
 int handle_string(
-	__attribute__((unused)) const format_specifier * spec,
+	const format_specifier * spec,
 	va_list args, string_buffer *buffer)
 {
 	char *str = va_arg(args, char *);
@@ -20,6 +20,10 @@ int handle_string(
 
 	if (str)
 	{
+		if (spec->width)
+		{
+			handle_width((format_specifier *)spec, buffer, _strlen(str));
+		}
 		append_string(buffer, str);
 	}
 	else
