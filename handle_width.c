@@ -21,6 +21,11 @@ int handle_width(format_specifier *spec, string_buffer *buffer, int len)
 			append_char(buffer, _itoa(0));
 			spec->width--;
 		}
+		else
+		{
+			append_char(buffer, ' ');
+			spec->width--;
+		}
 	}
 
 	characters_added = buffer->length - initial_length;

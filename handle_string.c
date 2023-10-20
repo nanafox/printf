@@ -2,15 +2,14 @@
 
 /**
  * handle_string - appends a string to the string buffer
- * @spec: format specifier information (unused)
+ * @spec: format specifier information
  * @args: the arguments list
  * @buffer: the string buffer to store the result
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_string(
-	__attribute__((unused)) const format_specifier * spec,
-	va_list args, string_buffer *buffer)
+int handle_string(const format_specifier *spec, va_list args,
+				  string_buffer *buffer)
 {
 	char *str = va_arg(args, char *);
 	int characters_added;
@@ -20,6 +19,10 @@ int handle_string(
 
 	if (str)
 	{
+		if (spec->width)
+		{
+			handle_width((format_specifier *)spec, buffer, _strlen(str));
+		}
 		append_string(buffer, str);
 	}
 	else
@@ -40,7 +43,7 @@ int handle_string(
  * Return: the number of characters appended to the string @buffer
  */
 int handle_string_reversal(
-	__attribute__((unused)) const format_specifier * spec,
+	__attribute__((unused)) const format_specifier *spec,
 	va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
@@ -78,9 +81,8 @@ int handle_string_reversal(
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_rot13(
-	__attribute__((unused)) const format_specifier * spec,
-	va_list args, string_buffer *buffer)
+int handle_rot13(__attribute__((unused)) const format_specifier *spec,
+				 va_list args, string_buffer *buffer)
 {
 	char *str, *dup_str;
 	int characters_added;
@@ -116,9 +118,8 @@ int handle_rot13(
  *
  * Return: the number of characters appended to the string @buffer
  */
-int handle_custom_string(
-	__attribute__((unused)) const format_specifier * spec,
-	va_list args, string_buffer *buffer)
+int handle_custom_string(__attribute__((unused)) const format_specifier *spec,
+						 va_list args, string_buffer *buffer)
 {
 	char hex_str[5];
 	char *str, *dup_str;
@@ -170,6 +171,6 @@ void char_to_hex(char *buffer, unsigned char ch)
 
 	buffer[0] = '\\';
 	buffer[1] = 'x';
-	buffer[2] = hex_chars[ch >> 4]; /* first hex digit */
-	buffer[3] = hex_chars[ch & 0x0F];  /* second hex digit */
+	buffer[2] = hex_chars[ch >> 4];	  /* first hex digit */
+	buffer[3] = hex_chars[ch & 0x0F]; /* second hex digit */
 }

@@ -21,6 +21,8 @@
 #define is_valid_sharp_specifier(c) ((c) == 'x' || (c) == 'X' || (c) == 'o')
 #define is_valid_zero_specifier(c) \
 	(is_valid_plus_specifier(c) || is_valid_sharp_specifier(c) || (c) == 'u')
+#define is_valid_width_specifier(c) \
+	(is_valid_zero_specifier(c) || (c) == 's' || (c) == 'c')
 
 /**
  * struct string_buffer - structure to hold a dynamically growing string
@@ -73,7 +75,8 @@ int select_format_handler(const char specifier, format_specifier *spec,
 int custom_printf(string_buffer *buffer, const char *format, va_list args);
 
 /* string modifiers parser */
-const char *parse_modifiers(const char *format, format_specifier *spec);
+const char *parse_modifiers(const char *format, format_specifier *spec,
+							va_list args);
 
 /* creates an array of format specifiers and used by the multiple functions */
 format_specifier *create_format_specifiers(void);
