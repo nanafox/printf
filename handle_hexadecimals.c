@@ -10,7 +10,7 @@
  * Return: the number of characters appended to the string buffer
  */
 int handle_hex_lower(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+					 string_buffer *buffer)
 {
 	char hex_str[17];
 	int characters_added;
@@ -24,7 +24,7 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 	utob(n, hex_str, HEX);
 	if (spec->zero_flag)
 	{
-		format_specifier *tmp_spec = (format_specifier *) spec;
+		format_specifier *tmp_spec = (format_specifier *)spec;
 
 		handle_width(tmp_spec, buffer, _strlen(hex_str));
 	}
@@ -49,7 +49,7 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
  * Return: the number of characters appended to the string buffer
  */
 int handle_hex_upper(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+					 string_buffer *buffer)
 {
 	int i;
 	char hex_str[17];
@@ -62,7 +62,6 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 		append_string(buffer, "0X");
 	}
 
-	
 	utob(n, hex_str, HEX);
 	for (i = 0; hex_str[i] != '\0'; i++)
 	{
@@ -73,7 +72,7 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 	}
 	if (spec->zero_flag)
 	{
-		format_specifier *tmp_spec = (format_specifier *) spec;
+		format_specifier *tmp_spec = (format_specifier *)spec;
 
 		handle_width(tmp_spec, buffer, _strlen(hex_str));
 	}

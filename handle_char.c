@@ -8,15 +8,15 @@
  *
  * Return: 1, the character appended to the string buffer
  */
-int handle_char(__attribute__((unused))
-		const format_specifier * spec, va_list args, string_buffer *buffer)
+int handle_char(const format_specifier *spec, va_list args,
+				string_buffer *buffer)
 {
 	int characters_added;
 	size_t initial_length;
 	char ch = va_arg(args, int);
 
 	initial_length = buffer->length;
-	
+
 	if (spec->width)
 	{
 		handle_width((format_specifier *)spec, buffer, 1);
@@ -36,8 +36,8 @@ int handle_char(__attribute__((unused))
  * Return: Returns the number 1, indicating that
  * a single percent character '%' has been appended to the string buffer
  */
-int handle_percent(__attribute__((unused)) const format_specifier * spec,
-		__attribute__((unused)) va_list args, string_buffer *buffer)
+int handle_percent(__attribute__((unused)) const format_specifier *spec,
+				   __attribute__((unused)) va_list args, string_buffer *buffer)
 {
 	append_char(buffer, '%');
 

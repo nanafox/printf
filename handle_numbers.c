@@ -46,10 +46,9 @@ int handle_decimal(const format_specifier *spec, va_list args,
 	{
 		handle_width((format_specifier *)spec, buffer, _strlen(result));
 	}
-	
 
 	append_string(buffer, result);
-	
+
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
 }
@@ -63,8 +62,8 @@ int handle_decimal(const format_specifier *spec, va_list args,
  *
  * Return: the number of characters appended to the string buffer
  */
-int handle_unsigned_int(const format_specifier *spec,
-						va_list args, string_buffer *buffer)
+int handle_unsigned_int(const format_specifier *spec, va_list args,
+						string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
 	char result[21];
@@ -159,7 +158,7 @@ int handle_octal(const format_specifier *spec, va_list args,
  * @len: the length of the string @result
  *
  * Return: the current length of the string buffer
-*/
+ */
 int neg_zero_handler(const format_specifier *spec, char *result,
 					 string_buffer *buffer, int len)
 {
