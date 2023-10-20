@@ -42,7 +42,14 @@ int handle_decimal(const format_specifier *spec, va_list args,
 		else
 			handle_width(tmp_spec, buffer, len);
 	}
+	else if (spec->width)
+	{
+		handle_width((format_specifier *)spec, buffer, _strlen(result));
+	}
+	
+
 	append_string(buffer, result);
+	
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
 }
@@ -70,6 +77,10 @@ int handle_unsigned_int(const format_specifier *spec,
 		format_specifier *tmp_spec = (format_specifier *)spec;
 
 		handle_width(tmp_spec, buffer, _strlen(result));
+	}
+	else if (spec->width)
+	{
+		handle_width((format_specifier *)spec, buffer, _strlen(result));
 	}
 	append_string(buffer, result);
 
@@ -128,6 +139,10 @@ int handle_octal(const format_specifier *spec, va_list args,
 		format_specifier *tmp_spec = (format_specifier *)spec;
 
 		handle_width(tmp_spec, buffer, _strlen(result));
+	}
+	if (spec->width)
+	{
+		handle_width((format_specifier *)spec, buffer, _strlen(result));
 	}
 	append_string(buffer, result);
 
