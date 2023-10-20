@@ -16,6 +16,11 @@ int handle_char(__attribute__((unused))
 	char ch = va_arg(args, int);
 
 	initial_length = buffer->length;
+	
+	if (spec->width)
+	{
+		handle_width((format_specifier *)spec, buffer, 1);
+	}
 	append_char(buffer, ch);
 
 	characters_added = buffer->length - initial_length;
