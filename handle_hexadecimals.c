@@ -22,6 +22,12 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 		append_string(buffer, "0x");
 	}
 	utob(n, hex_str, HEX);
+	if (spec->zero_flag)
+	{
+		format_specifier *tmp_spec = (format_specifier *) spec;
+
+		handle_width(tmp_spec, buffer, _strlen(hex_str));
+	}
 	append_string(buffer, hex_str);
 
 	characters_added = buffer->length - initial_length;
@@ -57,6 +63,12 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 		{
 			hex_str[i] = hex_str[i] - 'a' + 'A';
 		}
+	}
+	if (spec->zero_flag)
+	{
+		format_specifier *tmp_spec = (format_specifier *) spec;
+
+		handle_width(tmp_spec, buffer, _strlen(hex_str));
 	}
 	append_string(buffer, hex_str);
 

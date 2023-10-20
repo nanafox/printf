@@ -2,36 +2,24 @@
 
 /**
  * handle_width - handle the width specifier
- * @format: the format string being processed.
  * @spec: the format specifier to process.
  * @buffer: the string buffer for output.
+ * @len: length of string
  *
  * Return: the number of characters added to the buffer
  */
-int handle_width(const char *format, format_specifier *spec,
-		string_buffer *buffer)
+int handle_width(format_specifier *spec, string_buffer *buffer, int len)
 {
-	int width = 0;
 	int characters_added = 0;
 	size_t initial_length = buffer->length;
 
-	format++;
-
-	if (*format >= '0' && *format <= '9')
+	/* Append width to the output buffer */
+	while (spec->width > len)
 	{
-		while (*format >= '0' && *format <= '9')
+		if (spec->zero_flag)
 		{
-			width = width * 10 + (*format - '0');
-			format++;
-		}
-
-		spec->width = width;
-
-		/* Append width to the output buffer */
-		while (width > 0)
-		{
-			append_char(buffer, ' ');
-			width--;
+			append_char(buffer, _itoa(0));
+			spec->width--;
 		}
 	}
 

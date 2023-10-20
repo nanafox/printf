@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdio.h>
 
 /**
  * parse_modifiers - handles string modifiers
@@ -14,6 +15,19 @@ const char *parse_modifiers(const char *format, format_specifier *spec)
 		/* search for conversion modifiers */
 		switch (*format)
 		{
+		case '0':
+			if (is_valid_zero_specifier(*(format + 1)))
+			{
+				spec->zero_flag = 1;
+				spec->width = 0;
+			}
+			else if (is_valid_zero_specifier(*(format + 2)))
+			{
+				format++;
+				spec->zero_flag = 1;
+				spec->width = _atoi(format);
+			}
+			break;
 		case '#':
 			if (is_valid_sharp_specifier(*(format + 1)))
 				spec->sharp_flag = 1;
@@ -27,7 +41,7 @@ const char *parse_modifiers(const char *format, format_specifier *spec)
 				spec->space_flag = 1;
 			break;
 		default:
-			return (format); /* unknown flag/specifier encountered */
+			return (format); /* unknown flag or specifier encountered */
 		}
 		format++;
 	}
