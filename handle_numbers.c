@@ -46,7 +46,8 @@ int handle_decimal(const format_specifier *spec, va_list args,
 		handle_width((format_specifier *)spec, buffer, len);
 
 	append_string(buffer, result);
-	handle_width((format_specifier *)spec, buffer, len);
+	if (spec->minus_flag)
+		handle_width((format_specifier *)spec, buffer, len);
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
