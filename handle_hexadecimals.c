@@ -84,7 +84,7 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 
 		handle_width(tmp_spec, buffer, len);
 	}
-	else if (spec->width)
+	else if (spec->width && spec->minus_flag == 0)
 	{
 		handle_width((format_specifier *)spec, buffer, len);
 	}
