@@ -17,11 +17,8 @@ const char *parse_modifiers(const char *format, format_specifier *spec,
 		{
 		case '0':
 			spec->zero_flag = 1;
-			if (isdigit(*(format + 1)))
-			{
-				spec->width = _atoi(format + 1);
-				format = update_format(format);
-			}
+			spec->width = get_width_precision(format + 1);
+			format = update_format(format);
 			break;
 		case '1': case '2': case '3': case '4':	case '5':
 		case '6': case '7': case '8': case '9':
@@ -65,4 +62,19 @@ const char *update_format(const char *format)
 		format++;
 
 	return (format - 1);
+}
+
+/**
+ * get_width_precision - get width or precision
+ * @format: format string
+ *
+ * Return: width or precision
+*/
+int get_width_precision(const char *format)
+{
+	if (isdigit(*(format)))
+	{
+		return (_atoi(format));
+	}
+	return (0);
 }

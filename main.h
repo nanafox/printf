@@ -141,6 +141,7 @@ size_t _strlen(const char *str);
 char *_strdup(const char *s);
 void char_to_hex(char *buffer, unsigned char ch);
 const char *update_format(const char *format);
+int get_width_precision(const char *format);
 
 /* memory management functions */
 void *_realloc(void *old_mem_blk, size_t old_size, size_t new_size);
