@@ -20,7 +20,7 @@
  * characters added to the @buffer after the unknown specifier is written.
  */
 int select_format_handler(const char specifier, format_specifier *spec,
-		va_list args, string_buffer *buffer)
+						  va_list args, string_buffer *buffer)
 {
 	int i, characters_added;
 	size_t initial_length = buffer->length;
@@ -30,24 +30,18 @@ int select_format_handler(const char specifier, format_specifier *spec,
 		if (spec[i].specifier == specifier)
 		{
 			/* set the flag if it's available in the format string */
-			if (spec->plus_flag)
+			if (spec->plus_flag && is_valid_plus_specifier(specifier))
 				spec[i].plus_flag = 1;
-			else if (spec->space_flag)
+			if (spec->space_flag && is_valid_space_specifier(specifier))
 				spec[i].space_flag = 1;
-			else if (spec->sharp_flag)
+			if (spec->sharp_flag && is_valid_sharp_specifier(specifier))
 				spec[i].sharp_flag = 1;
-			else if (spec->zero_flag)
-			{
+			if (spec->zero_flag && is_valid_zero_specifier(specifier))
 				spec[i].zero_flag = 1;
+			if (spec->width && is_valid_width_specifier(specifier))
 				spec[i].width = spec->width;
-			}
-			else if (spec->width && !spec->minus_flag)
-				spec[i].width = spec->width;
-			else if (spec->minus_flag)
-			{
+			if (spec->minus_flag && is_valid_width_specifier(specifier))
 				spec[i].minus_flag = 1;
-				spec[i].width = spec->width;
-			}
 
 			/* invoke the appropriate function to handle the found specifier */
 			return (spec[i].handler(&spec[i], args, buffer));

@@ -10,36 +10,59 @@
 const char *parse_modifiers(const char *format, format_specifier *spec,
 							va_list args)
 {
-	while (*format)
+	while (*format && !_strchr("%bidcsSrRxXuop", *format))
 	{
 		/* search for conversion modifiers */
-		if (*format == '0' && is_valid_zero_specifier(*(format + 1)))
-			spec->zero_flag = 1;
-		else if (*format == '0' && is_valid_zero_specifier(*(format + 2)))
+		switch (*format)
 		{
-			format++;
+		case '0':
 			spec->zero_flag = 1;
+			if (isdigit(*(format + 1)))
+			{
+				spec->width = _atoi(format + 1);
+				format = update_format(format);
+			}
+			break;
+		case '1': case '2': case '3': case '4':	case '5':
+		case '6': case '7': case '8': case '9':
 			spec->width = _atoi(format);
-		}
-		else if (*format == '-' && is_valid_zero_specifier(*(format + 2)))
-		{
-			format++;
+			format = update_format(format);
+			break;
+		case '-':
 			spec->minus_flag = 1;
-			spec->width = 6;
-		}
-		else if (isdigit(*format) && is_valid_width_specifier(*(format + 1)))
-			spec->width = _atoi(format);
-		else if (*format == '*' && is_valid_width_specifier(*(format + 1)))
+			break;
+		case '*':
 			spec->width = va_arg(args, int);
-		else if (*format == '#' && is_valid_sharp_specifier(*(format + 1)))
+			break;
+		case '#':
 			spec->sharp_flag = 1;
-		else if (*format == '+' && is_valid_plus_specifier(*(format + 1)))
+			break;
+		case '+':
 			spec->plus_flag = 1;
-		else if (*format == ' ' && is_valid_space_specifier(*(format + 1)))
+			break;
+		case ' ':
 			spec->space_flag = 1;
-		else
+			break;
+		default:
 			return (format); /* unknown flag or specifier encountered */
+		}
 		format++;
 	}
 	return (format);
+}
+
+/**
+ * update_format - updates the format string after digits are encountered
+ * @format: the format string
+ *
+ * Note: the digits here refer to the ones given for widths and precision
+ *
+ * Return: the updated format string
+*/
+const char *update_format(const char *format)
+{
+	while (isdigit(*format))
+		format++;
+
+	return (format - 1);
 }
