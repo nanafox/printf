@@ -12,18 +12,23 @@ int handle_string(const format_specifier *spec, va_list args,
 				  string_buffer *buffer)
 {
 	char *str = va_arg(args, char *);
-	int characters_added;
+	int characters_added, len;
 	size_t initial_length;
 
 	initial_length = buffer->length;
 
 	if (str)
 	{
-		if (spec->width)
+		len = _strlen(str);
+		if (spec->width && !spec->minus_flag)
 		{
-			handle_width((format_specifier *)spec, buffer, _strlen(str));
+			handle_width((format_specifier *)spec, buffer, len);
 		}
 		append_string(buffer, str);
+		if (spec->minus_flag)
+		{
+			handle_width((format_specifier *)spec, buffer, len);
+		}
 	}
 	else
 	{
