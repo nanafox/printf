@@ -17,11 +17,17 @@ int handle_char(const format_specifier *spec, va_list args,
 
 	initial_length = buffer->length;
 
-	if (spec->width)
+	/* handle space padding before the character */
+	if (spec->width && !spec->minus_flag)
 	{
 		handle_width((format_specifier *)spec, buffer, 1);
 	}
 	append_char(buffer, ch);
+	/* handle the space padding after character */
+	if (spec->minus_flag)
+	{
+		handle_width((format_specifier *)spec, buffer, 1);
+	}
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
