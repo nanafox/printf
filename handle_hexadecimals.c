@@ -16,30 +16,27 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 	int characters_added, len;
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
+	format_specifier *tmp_spec = (format_specifier *)spec;
+
+	utob(n, hex_str, HEX);
+	len = _strlen(hex_str);
 
 	if (spec->sharp_flag && n > 0)
 	{
+		tmp_spec->width -= 2; /* account for the extra characters */
 		append_string(buffer, "0x");
 	}
-	utob(n, hex_str, HEX);
 
-	len = _strlen(hex_str);
 	if (spec->zero_flag)
-	{
-		format_specifier *tmp_spec = (format_specifier *)spec;
-
 		handle_width(tmp_spec, buffer, len);
-	}
-	else if (spec->width && spec->minus_flag == 0)
-	{
-		handle_width((format_specifier *)spec, buffer, len);
-	}
+
+	if (spec->width && spec->minus_flag == 0)
+		handle_width(tmp_spec, buffer, len);
 
 	append_string(buffer, hex_str);
+
 	if (spec->minus_flag)
-	{
-		handle_width((format_specifier *)spec, buffer, len);
-	}
+		handle_width(tmp_spec, buffer, len);
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
@@ -62,13 +59,18 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 	int characters_added;
 	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
+	format_specifier *tmp_spec = (format_specifier *)spec;
+
+	utob(n, hex_str, HEX);
+	len = _strlen(hex_str);
 
 	if (spec->sharp_flag && n > 0)
 	{
+		tmp_spec->width -= 2;
 		append_string(buffer, "0X");
 	}
 
-	utob(n, hex_str, HEX);
+	/* get the uppercase version of hex digit */
 	for (i = 0; hex_str[i] != '\0'; i++)
 	{
 		if (hex_str[i] >= 'a' && hex_str[i] <= 'f')
@@ -77,22 +79,16 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 		}
 	}
 
-	len = _strlen(hex_str);
 	if (spec->zero_flag)
-	{
-		format_specifier *tmp_spec = (format_specifier *)spec;
-
 		handle_width(tmp_spec, buffer, len);
-	}
-	else if (spec->width && spec->minus_flag == 0)
-	{
+
+	if (spec->width && spec->minus_flag == 0)
 		handle_width((format_specifier *)spec, buffer, len);
-	}
+
 	append_string(buffer, hex_str);
+
 	if (spec->minus_flag)
-	{
 		handle_width((format_specifier *)spec, buffer, len);
-	}
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);

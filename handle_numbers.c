@@ -10,42 +10,39 @@
  * Return: the number of characters appended to the string buffer
  */
 int handle_decimal(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+				   string_buffer *buffer)
 {
 	int n = va_arg(args, int);
 	char result[21];
 	size_t initial_length = buffer->length;
 	int characters_added, len;
-
-	/* handle the + flag */
-	if (spec->plus_flag)
-	{
-		if (n >= 0)
-			append_char(buffer, '+');
-	}
-
-	/* handle the space flag */
-	else if (spec->space_flag)
-	{
-		if (n >= 0)
-			append_char(buffer, ' ');
-	}
+	format_specifier *tmp_spec = (format_specifier *)spec;
 
 	_itob(n, result, DEC);
 	len = _strlen(result);
 
-	if (spec->zero_flag)
+	if (spec->plus_flag && n >= 0)
 	{
-		format_specifier *tmp_spec = (format_specifier *)spec;
-
+		append_char(buffer, '+'); /* handle the '+' flag */
+		tmp_spec->width -= spec->plus_flag;
+	}
+	else if (spec->space_flag && n >= 0)
+	{
+		append_char(buffer, ' '); /* handle the space flag */
+		tmp_spec->width -= spec->space_flag;
+	}
+	if (spec->zero_flag && !spec->minus_flag)
+	{
 		if (n < 0)
 			return (neg_zero_handler(spec, result, buffer, len));
 		handle_width(tmp_spec, buffer, len);
 	}
-	if (spec->width && spec->minus_flag == 0)
+
+	if (spec->width && !spec->minus_flag)
 		handle_width((format_specifier *)spec, buffer, len);
 
 	append_string(buffer, result);
+
 	if (spec->minus_flag)
 		handle_width((format_specifier *)spec, buffer, len);
 
@@ -63,7 +60,7 @@ int handle_decimal(const format_specifier *spec, va_list args,
  * Return: the number of characters appended to the string buffer
  */
 int handle_unsigned_int(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+						string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
 	char result[21];
@@ -73,7 +70,7 @@ int handle_unsigned_int(const format_specifier *spec, va_list args,
 	utob(n, result, DEC);
 	len = _strlen(result);
 
-	if (spec->zero_flag)
+	if (spec->zero_flag && !spec->minus_flag)
 	{
 		format_specifier *tmp_spec = (format_specifier *)spec;
 
@@ -103,7 +100,7 @@ int handle_unsigned_int(const format_specifier *spec, va_list args,
  * Return: the number of characters appended to the string buffer
  */
 int handle_binary(__attribute__((unused)) const format_specifier *spec,
-		va_list args, string_buffer *buffer)
+				  va_list args, string_buffer *buffer)
 {
 	char result[65];
 	int characters_added;
@@ -127,35 +124,36 @@ int handle_binary(__attribute__((unused)) const format_specifier *spec,
  * Return: the number of characters appended to the string buffer
  */
 int handle_octal(const format_specifier *spec, va_list args,
-		string_buffer *buffer)
+				 string_buffer *buffer)
 {
 	unsigned int n = va_arg(args, unsigned int);
 	char result[23];
 	size_t initial_length = buffer->length;
-	int characters_added, len;
+	int characters_added, len = 0;
+	format_specifier *tmp_spec = (format_specifier *)spec;
 
-	if (spec->sharp_flag && n > 0)
-	{
-		append_char(buffer, '0');
-	}
 	utob(n, result, OCT);
 	len = _strlen(result);
 
-	if (spec->zero_flag)
-	{
-		format_specifier *tmp_spec = (format_specifier *)spec;
-
-		handle_width(tmp_spec, buffer, len);
-	}
 	if (spec->width && spec->minus_flag == 0)
 	{
-		handle_width((format_specifier *)spec, buffer, len);
+		tmp_spec->width -= spec->sharp_flag;
+		handle_width(tmp_spec, buffer, len);
 	}
-	append_string(buffer, result);
-	if (spec->minus_flag)
+
+	if (spec->sharp_flag && n > 0)
 	{
-		handle_width((format_specifier *)spec, buffer, len);
+		tmp_spec->width -= spec->sharp_flag;
+		append_char(buffer, '0');
 	}
+
+	if (spec->zero_flag && !spec->minus_flag)
+		handle_width(tmp_spec, buffer, len);
+
+	append_string(buffer, result);
+
+	if (spec->minus_flag)
+		handle_width(tmp_spec, buffer, len);
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
@@ -172,7 +170,7 @@ int handle_octal(const format_specifier *spec, va_list args,
  * Return: the current length of the string buffer
  */
 int neg_zero_handler(const format_specifier *spec, char *result,
-		string_buffer *buffer, int len)
+					 string_buffer *buffer, int len)
 {
 	char *dup_str;
 	format_specifier *tmp_spec = (format_specifier *)spec;
