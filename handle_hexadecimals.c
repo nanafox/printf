@@ -1,5 +1,7 @@
 #include "main.h"
 
+static void get_hex_upper(char *hex_str);
+
 /**
  * handle_hex_lower - convert and append an integer in lower hexadecimal
  * format
@@ -14,9 +16,15 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 {
 	char hex_str[17];
 	int characters_added, len;
-	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
+	unsigned int n = va_arg(args, unsigned int);
 	format_specifier *tmp_spec = (format_specifier *)spec;
+
+	if (spec->precision)
+	{
+		tmp_spec->zero_flag = 1; /* handle precision for unsigned integers */
+		tmp_spec->width = spec->precision;
+	}
 
 	utob(n, hex_str, HEX);
 	len = _strlen(hex_str);
@@ -33,7 +41,8 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 	if (spec->width && spec->minus_flag == 0)
 		handle_width(tmp_spec, buffer, len);
 
-	append_string(buffer, hex_str);
+	if (!(n == 0 && !spec->precision))
+		append_string(buffer, hex_str);
 
 	if (spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);
@@ -54,15 +63,22 @@ int handle_hex_lower(const format_specifier *spec, va_list args,
 int handle_hex_upper(const format_specifier *spec, va_list args,
 					 string_buffer *buffer)
 {
-	int i, len;
+	int len;
 	char hex_str[17];
 	int characters_added;
-	unsigned int n = va_arg(args, unsigned int);
 	size_t initial_length = buffer->length;
+	unsigned int n = va_arg(args, unsigned int);
 	format_specifier *tmp_spec = (format_specifier *)spec;
+
+	if (spec->precision)
+	{
+		tmp_spec->zero_flag = 1; /* handle precision for unsigned integers */
+		tmp_spec->width = spec->precision;
+	}
 
 	utob(n, hex_str, HEX);
 	len = _strlen(hex_str);
+	get_hex_upper(hex_str); /* get the uppercase version of hex digit */
 
 	if (spec->sharp_flag && n > 0)
 	{
@@ -70,7 +86,30 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 		append_string(buffer, "0X");
 	}
 
-	/* get the uppercase version of hex digit */
+	if (spec->zero_flag)
+		handle_width(tmp_spec, buffer, len);
+
+	if (spec->width && spec->minus_flag == 0)
+		handle_width(tmp_spec, buffer, len);
+
+	if (!(n == 0 && !spec->precision))
+		append_string(buffer, hex_str);
+
+	if (spec->minus_flag)
+		handle_width(tmp_spec, buffer, len);
+
+	characters_added = buffer->length - initial_length;
+	return (characters_added);
+}
+
+/**
+ * get_hex_upper - updates a hex digit to its uppercase version
+ * @hex_str: the hex string to convert
+*/
+void get_hex_upper(char *hex_str)
+{
+	int i;
+
 	for (i = 0; hex_str[i] != '\0'; i++)
 	{
 		if (hex_str[i] >= 'a' && hex_str[i] <= 'f')
@@ -78,18 +117,4 @@ int handle_hex_upper(const format_specifier *spec, va_list args,
 			hex_str[i] = hex_str[i] - 'a' + 'A';
 		}
 	}
-
-	if (spec->zero_flag)
-		handle_width(tmp_spec, buffer, len);
-
-	if (spec->width && spec->minus_flag == 0)
-		handle_width((format_specifier *)spec, buffer, len);
-
-	append_string(buffer, hex_str);
-
-	if (spec->minus_flag)
-		handle_width((format_specifier *)spec, buffer, len);
-
-	characters_added = buffer->length - initial_length;
-	return (characters_added);
 }
