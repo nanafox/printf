@@ -16,7 +16,7 @@ int handle_width(format_specifier *spec, string_buffer *buffer, int len)
 	/* Append width to the output buffer */
 	while (spec->width > len)
 	{
-		if (spec->zero_flag)
+		if (spec->zero_flag && !spec->minus_flag)
 		{
 			append_char(buffer, _itoa(0));
 			spec->width--;
