@@ -12,7 +12,8 @@
 int handle_decimal(const format_specifier *spec, va_list args,
 				   string_buffer *buffer)
 {
-	int n = va_arg(args, int);
+	long int n =
+		(spec->length == 'l') ? va_arg(args, long int) : va_arg(args, int);
 	char result[21];
 	size_t initial_length = buffer->length;
 	int characters_added, len;
@@ -30,7 +31,7 @@ int handle_decimal(const format_specifier *spec, va_list args,
 		append_char(buffer, '+'); /* handle the '+' flag */
 		tmp_spec->width -= spec->plus_flag;
 	}
-	else if (tmp_spec->space_flag && n >= 0)
+	if (tmp_spec->space_flag && n >= 0)
 	{
 		append_char(buffer, ' '); /* handle the space flag */
 		tmp_spec->width -= tmp_spec->space_flag;
@@ -43,7 +44,6 @@ int handle_decimal(const format_specifier *spec, va_list args,
 	}
 	if (tmp_spec->width && !tmp_spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);
-
 	if (!(n < 0 && spec->zero_flag) || !(n == 0 && !spec->precision))
 		append_string(buffer, result);
 
@@ -66,11 +66,16 @@ int handle_decimal(const format_specifier *spec, va_list args,
 int handle_unsigned_int(const format_specifier *spec, va_list args,
 						string_buffer *buffer)
 {
-	unsigned int n = va_arg(args, unsigned int);
+	size_t n;
 	char result[21];
 	size_t initial_length = buffer->length;
 	int characters_added, len;
 	format_specifier *tmp_spec = (format_specifier *)spec;
+
+	if (spec->length == 'l')
+		n = va_arg(args, unsigned long int);
+	else
+		n = va_arg(args, unsigned int);
 
 	if (spec->precision)
 	{
@@ -84,10 +89,12 @@ int handle_unsigned_int(const format_specifier *spec, va_list args,
 	if (spec->zero_flag && !spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);
 
-	else if (spec->width && spec->minus_flag == 0)
+	if (spec->width && spec->minus_flag == 0)
 		handle_width(tmp_spec, buffer, len);
 
 	if (!(n == 0 && !spec->precision))
+		append_string(buffer, result);
+	else
 		append_string(buffer, result);
 
 	if (spec->minus_flag)
@@ -133,12 +140,16 @@ int handle_binary(__attribute__((unused)) const format_specifier *spec,
 int handle_octal(const format_specifier *spec, va_list args,
 				 string_buffer *buffer)
 {
-	unsigned int n = va_arg(args, unsigned int);
+	size_t n;
 	char result[23];
 	size_t initial_length = buffer->length;
 	int characters_added, len = 0;
 	format_specifier *tmp_spec = (format_specifier *)spec;
 
+	if (spec->length == 'l')
+		n = va_arg(args, unsigned long int);
+	else
+		n = va_arg(args, unsigned int);
 	if (spec->precision)
 	{
 		tmp_spec->zero_flag = 1; /* handle precision for unsigned integers */
@@ -153,19 +164,17 @@ int handle_octal(const format_specifier *spec, va_list args,
 		tmp_spec->width -= spec->sharp_flag;
 		handle_width(tmp_spec, buffer, len);
 	}
-
 	if (spec->sharp_flag && n > 0)
 	{
 		tmp_spec->width -= spec->sharp_flag;
 		append_char(buffer, '0');
 	}
-
 	if (spec->zero_flag && !spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);
-
 	if (!(n == 0 && !spec->precision))
 		append_string(buffer, result);
-
+	else
+		append_string(buffer, result);
 	if (spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);
 

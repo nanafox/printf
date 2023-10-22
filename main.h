@@ -23,6 +23,7 @@
 	(is_valid_plus_specifier(c) || is_valid_sharp_specifier(c) || (c) == 'u')
 #define is_valid_width_specifier(c) \
 	(is_valid_zero_specifier(c) || (c) == 's' || (c) == 'c')
+#define is_valid_length_specifier(c) (is_valid_zero_specifier(c))
 
 /**
  * struct string_buffer - structure to hold a dynamically growing string

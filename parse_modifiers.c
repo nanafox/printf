@@ -13,38 +13,36 @@ const char *parse_modifiers(const char *format, format_specifier *spec,
 	while (*format && !_strchr("%bidcsSrRxXuop", *format))
 	{
 		/* search for conversion modifiers */
-		switch (*format)
+		if (*format == '0')
 		{
-		case '0':
 			spec->zero_flag = 1;
 			spec->width = get_width_precision(format + 1, args);
 			format = update_format(format);
-			break;
-		case '.':
+		}
+		else if (*format == '.')
+		{
 			spec->precision = get_width_precision(format + 1, args);
 			format = update_format(format + 1);
-			break;
-		case '1': case '2': case '3': case '4': case '5':
-		case '6': case '7': case '8': case '9':
+		}
+		else if (*format >= '1' && *format <= '9')
+		{
 			spec->width = get_width_precision(format, args);
 			format = update_format(format);
-			break;
-		case '-':
+		}
+		else if (*format == '-')
 			spec->minus_flag = 1;
-			break;
-		case '*':
+		else if (*format == '*')
 			spec->width = get_width_precision(format, args);
-			break;
-		case '#':
+		else if (*format == '#')
 			spec->sharp_flag = 1;
-			break;
-		case '+':
+		else if (*format == '+')
 			spec->plus_flag = 1;
-			break;
-		case ' ':
+		else if (*format == ' ')
 			spec->space_flag = 1;
-			break;
-		default:
+		else if (*format == 'l' || *format == 'h')
+			spec->length = *format;
+		else
+		{
 			return (format); /* unknown flag or specifier encountered */
 		}
 		format++;
@@ -59,7 +57,7 @@ const char *parse_modifiers(const char *format, format_specifier *spec,
  * Note: the digits here refer to the ones given for widths and precision
  *
  * Return: the updated format string
-*/
+ */
 const char *update_format(const char *format)
 {
 	while (isdigit(*format) || *format == '*')
@@ -74,7 +72,7 @@ const char *update_format(const char *format)
  * @args: arguments list
  *
  * Return: width or precision
-*/
+ */
 int get_width_precision(const char *format, va_list args)
 {
 	if (isdigit(*(format)))
