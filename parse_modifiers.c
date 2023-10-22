@@ -17,19 +17,23 @@ const char *parse_modifiers(const char *format, format_specifier *spec,
 		{
 		case '0':
 			spec->zero_flag = 1;
-			spec->width = get_width_precision(format + 1);
+			spec->width = get_width_precision(format + 1, args);
 			format = update_format(format);
 			break;
-		case '1': case '2': case '3': case '4':	case '5':
+		case '.':
+			spec->precision = get_width_precision(format + 1, args);
+			format = update_format(format + 1);
+			break;
+		case '1': case '2': case '3': case '4': case '5':
 		case '6': case '7': case '8': case '9':
-			spec->width = _atoi(format);
+			spec->width = get_width_precision(format, args);
 			format = update_format(format);
 			break;
 		case '-':
 			spec->minus_flag = 1;
 			break;
 		case '*':
-			spec->width = va_arg(args, int);
+			spec->width = get_width_precision(format, args);
 			break;
 		case '#':
 			spec->sharp_flag = 1;
@@ -58,7 +62,7 @@ const char *parse_modifiers(const char *format, format_specifier *spec,
 */
 const char *update_format(const char *format)
 {
-	while (isdigit(*format))
+	while (isdigit(*format) || *format == '*')
 		format++;
 
 	return (format - 1);
@@ -67,14 +71,17 @@ const char *update_format(const char *format)
 /**
  * get_width_precision - get width or precision
  * @format: format string
+ * @args: arguments list
  *
  * Return: width or precision
 */
-int get_width_precision(const char *format)
+int get_width_precision(const char *format, va_list args)
 {
 	if (isdigit(*(format)))
 	{
 		return (_atoi(format));
 	}
+	else if (*format == '*')
+		return (va_arg(args, int));
 	return (0);
 }
