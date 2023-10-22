@@ -31,7 +31,7 @@ int handle_decimal(const format_specifier *spec, va_list args,
 		append_char(buffer, '+'); /* handle the '+' flag */
 		tmp_spec->width -= spec->plus_flag;
 	}
-	if (tmp_spec->space_flag && n >= 0)
+	else if (tmp_spec->space_flag && n >= 0)
 	{
 		append_char(buffer, ' '); /* handle the space flag */
 		tmp_spec->width -= tmp_spec->space_flag;
