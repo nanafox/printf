@@ -87,8 +87,6 @@ format_specifier *create_format_specifiers(void);
 void print_str_buffer(const char *str, size_t len);
 
 /* string handlers */
-int handle_precision(const char *format, format_specifier *spec,
-					 string_buffer *buffer);
 int handle_width(format_specifier *spec, string_buffer *buffer, int len);
 int handle_string(const format_specifier *spec, va_list args,
 				  string_buffer *buffer);
@@ -141,7 +139,7 @@ size_t _strlen(const char *str);
 char *_strdup(const char *s);
 void char_to_hex(char *buffer, unsigned char ch);
 const char *update_format(const char *format);
-int get_width_precision(const char *format);
+int get_width_precision(const char *format, va_list args);
 
 /* memory management functions */
 void *_realloc(void *old_mem_blk, size_t old_size, size_t new_size);
