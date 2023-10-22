@@ -21,7 +21,7 @@ int handle_string(const format_specifier *spec, va_list args,
 	if (str)
 	{
 		len = _strlen(str);
-		if (spec->width && !spec->minus_flag && spec->precision)
+		if (spec->width && !spec->minus_flag && !spec->precision)
 			handle_width(tmp_spec, buffer, len);
 		if (spec->precision)
 		{
