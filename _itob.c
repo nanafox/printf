@@ -23,7 +23,7 @@ void _itob(ssize_t number, char *buffer, int base)
 	if (number == LONG_MIN)
 		tmp_num = (size_t)LONG_MAX + 1;
 
-	if (number == SHRT_MAX)
+	if (number == SHRT_MIN)
 		tmp_num = (size_t)SHRT_MAX + 1;
 
 	if (base != BIN && base != OCT && base != DEC && base != HEX)
