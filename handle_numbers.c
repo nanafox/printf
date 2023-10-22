@@ -18,33 +18,37 @@ int handle_decimal(const format_specifier *spec, va_list args,
 	int characters_added, len;
 	format_specifier *tmp_spec = (format_specifier *)spec;
 
+	if (spec->precision)
+	{
+		tmp_spec->zero_flag = 1; /* handle precision for signed integers */
+		tmp_spec->width = (n < 0) ? spec->precision + 1 : spec->precision;
+	}
 	_itob(n, result, DEC);
 	len = _strlen(result);
-
-	if (spec->plus_flag && n >= 0)
+	if (tmp_spec->plus_flag && n >= 0)
 	{
 		append_char(buffer, '+'); /* handle the '+' flag */
 		tmp_spec->width -= spec->plus_flag;
 	}
-	else if (spec->space_flag && n >= 0)
+	else if (tmp_spec->space_flag && n >= 0)
 	{
 		append_char(buffer, ' '); /* handle the space flag */
-		tmp_spec->width -= spec->space_flag;
+		tmp_spec->width -= tmp_spec->space_flag;
 	}
-	if (spec->zero_flag && !spec->minus_flag)
+	if (tmp_spec->zero_flag && !tmp_spec->minus_flag)
 	{
 		if (n < 0)
-			return (neg_zero_handler(spec, result, buffer, len));
+			return (neg_zero_handler(tmp_spec, result, buffer, len));
 		handle_width(tmp_spec, buffer, len);
 	}
+	if (tmp_spec->width && !tmp_spec->minus_flag)
+		handle_width(tmp_spec, buffer, len);
 
-	if (spec->width && !spec->minus_flag)
-		handle_width((format_specifier *)spec, buffer, len);
+	if (!(n < 0 && spec->zero_flag) || !(n == 0 && !spec->precision))
+		append_string(buffer, result);
 
-	append_string(buffer, result);
-
-	if (spec->minus_flag)
-		handle_width((format_specifier *)spec, buffer, len);
+	if (tmp_spec->minus_flag)
+		handle_width(tmp_spec, buffer, len); /* handle the '-' flag */
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
@@ -66,25 +70,28 @@ int handle_unsigned_int(const format_specifier *spec, va_list args,
 	char result[21];
 	size_t initial_length = buffer->length;
 	int characters_added, len;
+	format_specifier *tmp_spec = (format_specifier *)spec;
+
+	if (spec->precision)
+	{
+		tmp_spec->zero_flag = 1; /* handle precision for unsigned integers */
+		tmp_spec->width = spec->precision;
+	}
 
 	utob(n, result, DEC);
 	len = _strlen(result);
 
 	if (spec->zero_flag && !spec->minus_flag)
-	{
-		format_specifier *tmp_spec = (format_specifier *)spec;
-
 		handle_width(tmp_spec, buffer, len);
-	}
+
 	else if (spec->width && spec->minus_flag == 0)
-	{
-		handle_width((format_specifier *)spec, buffer, len);
-	}
-	append_string(buffer, result);
+		handle_width(tmp_spec, buffer, len);
+
+	if (!(n == 0 && !spec->precision))
+		append_string(buffer, result);
+
 	if (spec->minus_flag)
-	{
-		handle_width((format_specifier *)spec, buffer, len);
-	}
+		handle_width(tmp_spec, buffer, len);
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
@@ -132,6 +139,12 @@ int handle_octal(const format_specifier *spec, va_list args,
 	int characters_added, len = 0;
 	format_specifier *tmp_spec = (format_specifier *)spec;
 
+	if (spec->precision)
+	{
+		tmp_spec->zero_flag = 1; /* handle precision for unsigned integers */
+		tmp_spec->width = spec->precision;
+	}
+
 	utob(n, result, OCT);
 	len = _strlen(result);
 
@@ -150,7 +163,8 @@ int handle_octal(const format_specifier *spec, va_list args,
 	if (spec->zero_flag && !spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);
 
-	append_string(buffer, result);
+	if (!(n == 0 && !spec->precision))
+		append_string(buffer, result);
 
 	if (spec->minus_flag)
 		handle_width(tmp_spec, buffer, len);

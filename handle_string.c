@@ -12,28 +12,34 @@ int handle_string(const format_specifier *spec, va_list args,
 				  string_buffer *buffer)
 {
 	char *str = va_arg(args, char *);
-	int characters_added, len;
+	int characters_added, len, i;
 	size_t initial_length;
+	format_specifier *tmp_spec = (format_specifier *)spec;
 
 	initial_length = buffer->length;
 
 	if (str)
 	{
 		len = _strlen(str);
-		if (spec->width && !spec->minus_flag)
+		if (spec->width && !spec->minus_flag && spec->precision)
+			handle_width(tmp_spec, buffer, len);
+		if (spec->precision)
 		{
-			handle_width((format_specifier *)spec, buffer, len);
+			len = (spec->precision > len) ? len : spec->precision;
+			/* check for width (initial) when precision is also given */
+			if (spec->width && !spec->minus_flag)
+				handle_width(tmp_spec, buffer, len);
+			for (i = 0; i < len; i++)
+				append_char(buffer, str[i]); /* handle string precision */
 		}
-		append_string(buffer, str);
+		if (str && !spec->precision)
+			append_string(buffer, str); /* append the string without precision */
+
 		if (spec->minus_flag)
-		{
-			handle_width((format_specifier *)spec, buffer, len);
-		}
+			handle_width(tmp_spec, buffer, len);
 	}
 	else
-	{
 		append_string(buffer, "(null)");
-	}
 
 	characters_added = buffer->length - initial_length;
 	return (characters_added);
@@ -164,11 +170,9 @@ int handle_custom_string(__attribute__((unused)) const format_specifier *spec,
 }
 
 /**
- * char_to_hex - Changes a character to its hex equivalent
- * @buffer: The buffer to store the formatted char
- * @ch: The character in question
- *
- * Return Nothing
+ * char_to_hex - changes a character to its hex equivalent
+ * @buffer: the buffer to store the formatted char
+ * @ch: the character to convert
  */
 void char_to_hex(char *buffer, unsigned char ch)
 {
